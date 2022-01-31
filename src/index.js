@@ -1,26 +1,24 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require("body-parser");
+
+const mongoose = require("mongoose");
+const User = require("../models/User");
 
 const port = process.env.PORT || 3000;
 
 const app = express();
 
 app.use(cors());
-
-// Config JSON response
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Models
-const User = require("../models/User");
 
-// Open Router - Public Route
 app.get("/", (req, res) => {
-  return res.json({ message: "Seja bem-vindo à API Studio Maker" }).status(200);
+  return res.json({ message: "Seja bem-vindo à API do Studio Maker" }).status(200);
 });
 
-// Register User
 app.post("/register", async (req, res) => {
   const { name, responsibleName, email, school, series } = req.body;
 
@@ -42,7 +40,6 @@ app.post("/register", async (req, res) => {
     return res.status(422).json({ message: "A série é obrigatório" });
   }
 
-  // check if user exists
   const userExists = await User.findOne({ email: email });
 
   if (userExists) {
@@ -51,7 +48,6 @@ app.post("/register", async (req, res) => {
       .json({ message: "E-mail existente! Por favor, tente outro e-mail." });
   }
 
-  // create user
   const user = new User({
     name,
     responsibleName,
@@ -71,9 +67,8 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Credencials
 mongoose
-  .connect(process.env.MONGO_URL)
+.connect(process.env.MONGO_URL)
   .then(() => {
     app.listen(port, () => {
       console.log(
