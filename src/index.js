@@ -79,7 +79,7 @@ mongoose
     `mongodb+srv://${DB.user}:${DB.password}@cluster0.zi99f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(port, () => {
+    app.listen(process.env.PORT || 3030, () => {
       console.log(
         `Banco de dados conectado - Servidor rodando em http://localhost:${port}/`
       );
