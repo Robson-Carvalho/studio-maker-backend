@@ -3,6 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 app.use(cors());
@@ -73,11 +75,6 @@ const DB = {
   password: process.env.DB_PASSWORD,
 };
 
-mongoose
-  .connect(
-    `mongodb+srv://${DB.user}:${DB.password}@cluster0.zi99f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
-  )
-  .then(() => {
-    app.listen(process.env.PORT || 3030);
-  })
-  .catch((err) => console.log(err));
+mongoose.connect(`mongodb+srv://${DB.user}:${DB.password}@cluster0.zi99f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`).then(() => {
+    app.listen(port);
+  }).catch((err) => console.log(err));
