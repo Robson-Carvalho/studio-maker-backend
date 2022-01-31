@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Models
-const User = require("./models/User");
+const User = require("../models/User");
 
 // Open Router - Public Route
 app.get("/", (req, res) => {
@@ -72,18 +72,13 @@ app.post("/register", async (req, res) => {
 });
 
 // Credencials
-const DB = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-};
-
 mongoose
-  .connect(
-    `mongodb+srv://${DB.user}:${DB.password}@cluster0.zi99f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
-  )
+  .connect(process.env.MONGO_URL)
   .then(() => {
-    app.listen(port, ()=>{
-      console.log(`Banco de Dados conectado - Servidor rodando em http://localhost:${port}/`)
+    app.listen(port, () => {
+      console.log(
+        `Banco de Dados conectado - Servidor rodando em http://localhost:${port}/`
+      );
     });
   })
   .catch((err) => console.log(err));
