@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Models
-const User = require("../models/User");
+const User = require("./models/User");
 
 // Open Router - Public Route
 app.get("/", (req, res) => {
@@ -46,7 +46,9 @@ app.post("/register", async (req, res) => {
   const userExists = await User.findOne({ email: email });
 
   if (userExists) {
-    return res.status(422).json({ message: "E-mail existente! Por favor, tente outro e-mail." });
+    return res
+      .status(422)
+      .json({ message: "E-mail existente! Por favor, tente outro e-mail." });
   }
 
   // create user
@@ -75,6 +77,13 @@ const DB = {
   password: process.env.DB_PASSWORD,
 };
 
-mongoose.connect(`mongodb+srv://${DB.user}:${DB.password}@cluster0.zi99f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`).then(() => {
-    app.listen(port);
-  }).catch((err) => console.log(err));
+mongoose
+  .connect(
+    `mongodb+srv://${DB.user}:${DB.password}@cluster0.zi99f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+  )
+  .then(() => {
+    app.listen(port, ()=>{
+      console.log(`Banco de Dados conectado - Servidor rodando em http://localhost:${port}/`)
+    });
+  })
+  .catch((err) => console.log(err));
