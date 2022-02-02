@@ -58,7 +58,7 @@ app.post("/register", async (req, res) => {
 
   try {
     await user.save();
-    res.status(201).json({ message: "Usuário registrado com sucesso" });
+    res.status(201).json({ message: "Inscrição realizada com sucesso!" });
   } catch (error) {
     console.log(error);
     res
